@@ -2,6 +2,23 @@
 server:
   port: 8090
 
+# 日志相关
+logging:
+  # 日志输出等级
+  level:
+    com.xun:
+      trace
+  # 日志输出路径
+#  path:
+#    ./tigalog/
+  pattern:
+    # 控制台日志输出格式
+    console:
+      "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+    # 文件日志输出格式
+    file:
+      "%d{yyyy-MM-dd HH:mm:ss.SSS} === [%thread] === %-5level === %logger{50} ==== %msg%n"
+
 # 数据库相关
 spring:
   datasource:
