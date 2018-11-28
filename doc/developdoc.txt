@@ -6,3 +6,7 @@
 * 使用yml进行配置
 * 整合Druid，配置数据源监控
 * log简单整合
+
+##### 2018.11.28
+* 引入thymeleaf 登录页
+* 引入spring security
