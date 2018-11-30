@@ -14,15 +14,13 @@ public class MvcWebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public WebMvcConfigurerAdapter webMvcConfigurerAdapter(){
+    public WebMvcConfigurerAdapter webMvcConfigurerAdapter() {
         WebMvcConfigurerAdapter adapter = new WebMvcConfigurerAdapter() {
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
                 registry.addViewController("/login").setViewName("login");
-                registry.addViewController("/dashboard").setViewName("dashboard");
-                registry.addViewController("/dashboard.html").setViewName("dashboard");
+                registry.addViewController("/index").setViewName("index");
                 registry.addViewController("/list").setViewName("list");
-                registry.addViewController("/404").setViewName("404");
             }
         };
         return adapter;

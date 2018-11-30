@@ -1,36 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<title>Signin Template for Bootstrap</title>
-		<!-- Bootstrap core CSS -->
-		<link href="/asserts/css/bootstrap.min.css" rel="stylesheet">
-		<!-- Custom styles for this template -->
-		<link href="/asserts/css/signin.css" rel="stylesheet">
-	</head>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}">
+</head>
+    <body>
 
-	<body class="text-center">
-		<form class="form-signin" action="dashboard.html">
-			<img class="mb-4" src="/asserts/img/bootstrap-solid.svg" alt="" width="72" height="72">
-			<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-			<label class="sr-only">Username</label>
-			<input type="text" class="form-control" placeholder="Username" required="" autofocus="">
-			<label class="sr-only">Password</label>
-			<input type="password" class="form-control" placeholder="Password" required="">
-			<div class="checkbox mb-3">
-				<label>
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
+    <div class="container blog-content-container">
+ 
+		<form  >
+			<h2 >请登录</h2>
+			
+			<div class="form-group col-md-5">
+				<label for="username" class="col-form-label">账号</label>
+				<input type="text" class="form-control" id="username" name="username" maxlength="50" placeholder="请输入账号">
+	 
 			</div>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-			<p class="mt-5 mb-3 text-muted">© 2017-2018</p>
-			<a class="btn btn-sm">中文</a>
-			<a class="btn btn-sm">English</a>
+			<div class="form-group col-md-5">
+				<label for="password" class="col-form-label">密码</label>
+				<input type="password" class="form-control" id="password" name="password" maxlength="30" placeholder="请输入密码" >
+			</div>
+			<div class="form-group col-md-5">
+				 <input type="checkbox" value="remember-me"> 记住我
+			</div>
+			<div class="form-group col-md-5">
+				<button type="submit" class="btn btn-primary">登录</button>
+			</div>
+ 
 		</form>
-
-	</body>
-
+    </div> <!-- /container -->
+ 
+	
+	<div th:replace="~{fragments/footer :: footer}">...</div>
+    </body>
 </html>
