@@ -5,8 +5,6 @@ import com.xun.tigablog.repository.AuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 /**
  * Authority 服务.
  *
@@ -19,7 +17,7 @@ public class AuthorityServiceImpl  implements AuthorityService {
 
     @Override
     public Authority getAuthorityById(Long id) {
-        return authorityRepository.findById(id).get();
+        return authorityRepository.findOne(id);
     }
 
 }

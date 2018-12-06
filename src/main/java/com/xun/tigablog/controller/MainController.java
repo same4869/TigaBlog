@@ -70,14 +70,15 @@ public class MainController {
 
     /**
      * 注册用户
+     *
      * @param user
      * @return
      */
     @PostMapping("/register")
     public String registerUser(User user) {
-//        List<Authority> authorities = new ArrayList<>();
-//        authorities.add(authorityService.getAuthorityById(ROLE_USER_AUTHORITY_ID));
-//        user.setAuthorities(authorities);
+        List<Authority> authorities = new ArrayList<>();
+        authorities.add(authorityService.getAuthorityById(ROLE_USER_AUTHORITY_ID));
+        user.setAuthorities(authorities);
         userService.saveUser(user);
         return "redirect:/login";
     }
@@ -86,4 +87,10 @@ public class MainController {
     public String search() {
         return "search";
     }
+
+    @GetMapping("/logout")
+    public String logout() {
+        return "index";
+    }
+
 }

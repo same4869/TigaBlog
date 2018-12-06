@@ -2,6 +2,7 @@
 server:
   port: 8090
 
+
 # 日志相关
 logging:
   # 日志输出等级
@@ -13,8 +14,8 @@ logging:
 #    ./tigalog/
   pattern:
     # 控制台日志输出格式
-    console:
-      "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+#    console:
+#      "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
     # 文件日志输出格式
     file:
       "%d{yyyy-MM-dd HH:mm:ss.SSS} === [%thread] === %-5level === %logger{50} ==== %msg%n"
@@ -55,3 +56,11 @@ spring:
     cache: false
   # 使用HTML5标准
     mode: HTML5
+
+# JPA 自动删表建表，根据domain下面的实体类
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+
+debug: true
