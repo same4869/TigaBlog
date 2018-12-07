@@ -90,6 +90,19 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/es.nitaur.markdown/txtmark -->
+        <dependency>
+            <groupId>es.nitaur.markdown</groupId>
+            <artifactId>txtmark</artifactId>
+            <version>0.16</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.nebulas</groupId>
+            <artifactId>nebulas</artifactId>
+            <version>0.4</version>
+        </dependency>
+
     </dependencies>
 
     <build>

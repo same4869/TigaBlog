@@ -63,4 +63,4 @@ spring:
     hibernate:
       ddl-auto: create-drop
 
-debug: true
+debug: false
