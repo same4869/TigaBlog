@@ -1,11 +1,13 @@
 package com.xun.tigablog.service;
 
 import com.xun.tigablog.domain.Blog;
+import com.xun.tigablog.domain.Comment;
 import com.xun.tigablog.domain.User;
 import com.xun.tigablog.repository.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -76,9 +78,24 @@ public class BlogServiceImpl implements BlogService {
 	@Override
 	public void readingIncrease(Long id) {
 		Blog blog = blogRepository.findOne(id);
-		blog.setReading(blog.getReading()+1);
+		blog.setReadSize(blog.getCommentSize()+1);
 		blogRepository.save(blog);
 	}
- 
+
+	@Override
+	public Blog createComment(Long blogId, String commentContent) {
+		Blog originalBlog = blogRepository.findOne(blogId);
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Comment comment = new Comment(user, commentContent);
+		originalBlog.addComment(comment);
+		return blogRepository.save(originalBlog);
+	}
+
+	@Override
+	public void removeComment(Long blogId, Long commentId) {
+		Blog originalBlog = blogRepository.findOne(blogId);
+		originalBlog.removeComment(commentId);
+		blogRepository.save(originalBlog);
+	}
 
 }
