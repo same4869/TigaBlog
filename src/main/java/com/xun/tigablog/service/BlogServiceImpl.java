@@ -3,6 +3,7 @@ package com.xun.tigablog.service;
 import com.xun.tigablog.domain.Blog;
 import com.xun.tigablog.domain.Comment;
 import com.xun.tigablog.domain.User;
+import com.xun.tigablog.domain.Vote;
 import com.xun.tigablog.repository.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -60,7 +61,7 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Override
-	public Page<Blog> listBlogsByTitleLike(User user, String title, Pageable pageable) {
+	public Page<Blog> listBlogsByTitleVote(User user, String title, Pageable pageable) {
 		// 模糊查询
 		title = "%" + title + "%";
 		Page<Blog> blogs = blogRepository.findByUserAndTitleLikeOrderByCreateTimeDesc(user, title, pageable);
@@ -68,7 +69,7 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Override
-	public Page<Blog> listBlogsByTitleLikeAndSort(User user, String title, Pageable pageable) {
+	public Page<Blog> listBlogsByTitleVoteAndSort(User user, String title, Pageable pageable) {
 		// 模糊查询
 		title = "%" + title + "%";
 		Page<Blog> blogs = blogRepository.findByUserAndTitleLike(user, title, pageable);
@@ -98,4 +99,22 @@ public class BlogServiceImpl implements BlogService {
 		blogRepository.save(originalBlog);
 	}
 
+	@Override
+	public Blog createVote(Long blogId) {
+		Blog originalBlog = blogRepository.findOne(blogId);
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Vote vote = new Vote(user);
+		boolean isExist = originalBlog.addVote(vote);
+		if (isExist) {
+			throw new IllegalArgumentException("该用户已经点过赞了");
+		}
+		return blogRepository.save(originalBlog);
+	}
+
+	@Override
+	public void removeVote(Long blogId, Long voteId) {
+		Blog originalBlog = blogRepository.findOne(blogId);
+		originalBlog.removeVote(voteId);
+		blogRepository.save(originalBlog);
+	}
 }

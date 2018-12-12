@@ -6,6 +6,7 @@ import javax.validation.ConstraintViolationException;
 
 import com.xun.tigablog.domain.Blog;
 import com.xun.tigablog.domain.User;
+import com.xun.tigablog.domain.Vote;
 import com.xun.tigablog.service.BlogService;
 import com.xun.tigablog.service.UserService;
 import com.xun.tigablog.utils.ConstraintViolationExceptionHandler;
@@ -53,7 +54,7 @@ public class UserspaceController {
 
     @GetMapping("/{username}")
     public String userSpace(@PathVariable("username") String username, Model model) {
-        User user = (User)userDetailsService.loadUserByUsername(username);
+        User  user = (User)userDetailsService.loadUserByUsername(username);
         model.addAttribute("user", user);
         return "redirect:/u/" + username + "/blogs";
     }
@@ -150,13 +151,13 @@ public class UserspaceController {
 
         Page<Blog> page = null;
         if (order.equals("hot")) { // 最热查询
-            Sort sort = new Sort(Direction.DESC,"reading","comments","likes");
+            Sort sort = new Sort(Direction.DESC,"readSize","commentSize","voteSize");
             Pageable pageable = new PageRequest(pageIndex, pageSize, sort);
-            page = blogService.listBlogsByTitleLikeAndSort(user, keyword, pageable);
+            page = blogService.listBlogsByTitleVoteAndSort(user, keyword, pageable);
         }
         if (order.equals("new")) { // 最新查询
             Pageable pageable = new PageRequest(pageIndex, pageSize);
-            page = blogService.listBlogsByTitleLike(user, keyword, pageable);
+            page = blogService.listBlogsByTitleVote(user, keyword, pageable);
         }
 
 
@@ -176,22 +177,37 @@ public class UserspaceController {
      */
     @GetMapping("/{username}/blogs/{id}")
     public String getBlogById(@PathVariable("username") String username,@PathVariable("id") Long id, Model model) {
+        User principal = null;
+        Blog blog = blogService.getBlogById(id);
+
         // 每次读取，简单的可以认为阅读量增加1次
         blogService.readingIncrease(id);
 
-        boolean isBlogOwner = false;
-
         // 判断操作用户是否是博客的所有者
+        boolean isBlogOwner = false;
         if (SecurityContextHolder.getContext().getAuthentication() !=null && SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
                 &&  !SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString().equals("anonymousUser")) {
-            User principal = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            principal = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal !=null && username.equals(principal.getUsername())) {
                 isBlogOwner = true;
             }
         }
 
+        // 判断操作用户的点赞情况
+        List<Vote> votes = blog.getVotes();
+        Vote currentVote = null; // 当前用户的点赞情况
+
+        if (principal !=null) {
+            for (Vote vote : votes) {
+                vote.getUser().getUsername().equals(principal.getUsername());
+                currentVote = vote;
+                break;
+            }
+        }
+
         model.addAttribute("isBlogOwner", isBlogOwner);
-        model.addAttribute("blogModel",blogService.getBlogById(id));
+        model.addAttribute("blogModel",blog);
+        model.addAttribute("currentVote",currentVote);
 
         return "/userspace/blog";
     }
@@ -248,10 +264,22 @@ public class UserspaceController {
     @PostMapping("/{username}/blogs/edit")
     @PreAuthorize("authentication.name.equals(#username)")
     public ResponseEntity<Response> saveBlog(@PathVariable("username") String username, @RequestBody Blog blog) {
-        User user = (User)userDetailsService.loadUserByUsername(username);
-        blog.setUser(user);
+
         try {
-            blogService.saveBlog(blog);
+            // 判断是修改还是新增
+
+            if (blog.getId()!=null) {
+                Blog orignalBlog = blogService.getBlogById(blog.getId());
+                orignalBlog.setTitle(blog.getTitle());
+                orignalBlog.setContent(blog.getContent());
+                orignalBlog.setSummary(blog.getSummary());
+                blogService.saveBlog(orignalBlog);
+            } else {
+                User user = (User)userDetailsService.loadUserByUsername(username);
+                blog.setUser(user);
+                blogService.saveBlog(blog);
+            }
+
         } catch (ConstraintViolationException e)  {
             return ResponseEntity.ok().body(new Response(false, ConstraintViolationExceptionHandler.getMessage(e)));
         } catch (Exception e) {

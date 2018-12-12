@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 public interface BlogService {
     /**
      * 保存Blog
-     *
      * @param Blog
      * @return
      */
@@ -23,7 +22,6 @@ public interface BlogService {
 
     /**
      * 删除Blog
-     *
      * @param id
      * @return
      */
@@ -31,7 +29,6 @@ public interface BlogService {
 
     /**
      * 更新Blog
-     *
      * @param Blog
      * @return
      */
@@ -39,7 +36,6 @@ public interface BlogService {
 
     /**
      * 根据id获取Blog
-     *
      * @param id
      * @return
      */
@@ -47,30 +43,26 @@ public interface BlogService {
 
     /**
      * 根据用户名进行分页模糊查询（最新）
-     *
      * @param user
      * @return
      */
-    Page<Blog> listBlogsByTitleLike(User user, String title, Pageable pageable);
+    Page<Blog> listBlogsByTitleVote(User user, String title, Pageable pageable);
 
     /**
      * 根据用户名进行分页模糊查询（最热）
-     *
      * @param user
      * @return
      */
-    Page<Blog> listBlogsByTitleLikeAndSort(User suser, String title, Pageable pageable);
+    Page<Blog> listBlogsByTitleVoteAndSort(User suser, String title, Pageable pageable);
 
     /**
      * 阅读量递增
-     *
      * @param id
      */
     void readingIncrease(Long id);
 
     /**
      * 发表评论
-     *
      * @param blogId
      * @param commentContent
      * @return
@@ -79,10 +71,24 @@ public interface BlogService {
 
     /**
      * 删除评论
-     *
      * @param blogId
      * @param commentId
      * @return
      */
     void removeComment(Long blogId, Long commentId);
+
+    /**
+     * 点赞
+     * @param blogId
+     * @return
+     */
+    Blog createVote(Long blogId);
+
+    /**
+     * 取消点赞
+     * @param blogId
+     * @param voteId
+     * @return
+     */
+    void removeVote(Long blogId, Long voteId);
 }
