@@ -23,6 +23,11 @@ public interface EsBlogService {
 	 * @return
 	 */
 	void removeEsBlog(String id);
+
+	/**
+	 * 删除所有Blog
+	 */
+	void removeAllEsBlog();
 	
 	/**
 	 * 更新 EsBlog

@@ -58,6 +58,13 @@ public class BlogServiceImpl implements BlogService {
 		esBlogService.removeEsBlog(esblog.getId());
 	}
 
+	@Transactional
+	@Override
+	public void removeAllBlog(){
+		blogRepository.deleteAll();
+		esBlogService.removeAllEsBlog();
+	}
+
 	/* (non-Javadoc)
 	 * @see com.waylau.spring.boot.blog.service.BlogService#getBlogById(java.lang.Long)
 	 */

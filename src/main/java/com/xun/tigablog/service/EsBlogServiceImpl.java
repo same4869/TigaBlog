@@ -55,6 +55,11 @@ public class EsBlogServiceImpl implements EsBlogService {
 		esBlogRepository.delete(id);
 	}
 
+	@Override
+	public void removeAllEsBlog(){
+		esBlogRepository.deleteAll();
+	}
+
 	/* (non-Javadoc)
 	 * @see com.waylau.spring.boot.blog.service.EsBlogService#updateEsBlog(com.waylau.spring.boot.blog.domain.es.EsBlog)
 	 */

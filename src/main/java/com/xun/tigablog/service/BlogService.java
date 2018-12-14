@@ -29,6 +29,11 @@ public interface BlogService {
     void removeBlog(Long id);
 
     /**
+     * 删除所有Blog
+     */
+    void removeAllBlog();
+
+    /**
      * 根据id获取Blog
      * @param id
      * @return
