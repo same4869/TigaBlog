@@ -1,6 +1,7 @@
 package com.xun.tigablog.service;
 
 import com.xun.tigablog.domain.Blog;
+import com.xun.tigablog.domain.Catalog;
 import com.xun.tigablog.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +16,7 @@ import org.springframework.data.domain.Pageable;
 public interface BlogService {
     /**
      * 保存Blog
-     * @param Blog
+     * @param EsBlog
      * @return
      */
     Blog saveBlog(Blog blog);
@@ -26,13 +27,6 @@ public interface BlogService {
      * @return
      */
     void removeBlog(Long id);
-
-    /**
-     * 更新Blog
-     * @param Blog
-     * @return
-     */
-    Blog updateBlog(Blog blog);
 
     /**
      * 根据id获取Blog
@@ -55,6 +49,13 @@ public interface BlogService {
      */
     Page<Blog> listBlogsByTitleVoteAndSort(User suser, String title, Pageable pageable);
 
+    /**
+     * 根据分类进行查询
+     * @param catalog
+     * @param pageable
+     * @return
+     */
+    Page<Blog> listBlogsByCatalog(Catalog catalog, Pageable pageable);
     /**
      * 阅读量递增
      * @param id

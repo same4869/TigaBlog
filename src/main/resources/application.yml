@@ -63,4 +63,14 @@ spring:
     hibernate:
       ddl-auto: create-drop
 
-debug: false
+# Elasticsearch远程服务
+  data:
+    elasticsearch:
+      cluster-nodes: 106.14.133.223:9300
+      # 设置连接超时时间
+      properties:
+        transport:
+          tcp:
+            connect_timeout: 120s
+
+debug: true

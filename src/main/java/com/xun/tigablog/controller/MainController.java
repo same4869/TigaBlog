@@ -21,25 +21,10 @@ public class MainController {
     private static final Long ROLE_USER_AUTHORITY_ID = 2L;
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private AuthorityService authorityService;
-
-    @Autowired
     private UserService userService;
 
-    @GetMapping("/test")
-    public String getTest() {
-        return "hello TIGA!";
-    }
-
-    @ResponseBody
-    @GetMapping("/testdb")
-    public Map<String, Object> getDataFromDB() {
-        List<Map<String, Object>> list = jdbcTemplate.queryForList("select * from test");
-        return list.get(0);
-    }
+    @Autowired
+    private AuthorityService  authorityService;
 
     @GetMapping("/")
     public String root() {
@@ -48,9 +33,13 @@ public class MainController {
 
     @GetMapping("/index")
     public String index() {
-        return "index";
+        return "redirect:/blogs";
     }
 
+    /**
+     * 获取登录界面
+     * @return
+     */
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -59,7 +48,7 @@ public class MainController {
     @GetMapping("/login-error")
     public String loginError(Model model) {
         model.addAttribute("loginError", true);
-        model.addAttribute("errorMsg", "登陆失败，用户名或者密码错误！");
+        model.addAttribute("errorMsg", "登陆失败，账号或者密码错误！");
         return "login";
     }
 
@@ -70,8 +59,9 @@ public class MainController {
 
     /**
      * 注册用户
-     *
      * @param user
+     * @param result
+     * @param redirect
      * @return
      */
     @PostMapping("/register")
@@ -86,11 +76,6 @@ public class MainController {
     @GetMapping("/search")
     public String search() {
         return "search";
-    }
-
-    @GetMapping("/logout")
-    public String logout() {
-        return "index";
     }
 
 }

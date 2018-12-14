@@ -36,9 +36,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
-	private AuthorityService authorityService;
+	private AuthorityService  authorityService;
 
 	/**
 	 * 查询所用用户
@@ -46,15 +46,15 @@ public class UserController {
 	 */
 	@GetMapping
 	public ModelAndView list(@RequestParam(value="async",required=false) boolean async,
-                             @RequestParam(value="pageIndex",required=false,defaultValue="0") int pageIndex,
-                             @RequestParam(value="pageSize",required=false,defaultValue="10") int pageSize,
-                             @RequestParam(value="name",required=false,defaultValue="") String name,
-                             Model model) {
-	 
+							 @RequestParam(value="pageIndex",required=false,defaultValue="0") int pageIndex,
+							 @RequestParam(value="pageSize",required=false,defaultValue="10") int pageSize,
+							 @RequestParam(value="name",required=false,defaultValue="") String name,
+							 Model model) {
+
 		Pageable pageable = new PageRequest(pageIndex, pageSize);
 		Page<User> page = userService.listUsersByNameLike(name, pageable);
 		List<User> list = page.getContent();	// 当前所在页面数据列表
-		
+
 		model.addAttribute("page", page);
 		model.addAttribute("userList", list);
 		return new ModelAndView(async==true?"users/list :: #mainContainerRepleace":"users/list", "userModel", model);
@@ -83,14 +83,14 @@ public class UserController {
 		List<Authority> authorities = new ArrayList<>();
 		authorities.add(authorityService.getAuthorityById(authorityId));
 		user.setAuthorities(authorities);
-		
+
 		if(user.getId() == null) {
 			user.setEncodePassword(user.getPassword()); // 加密密码
 		}else {
 			// 判断密码是否做了变更
 			User originalUser = userService.getUserById(user.getId());
 			String rawPassword = originalUser.getPassword();
-			PasswordEncoder encoder = new BCryptPasswordEncoder();
+			PasswordEncoder  encoder = new BCryptPasswordEncoder();
 			String encodePasswd = encoder.encode(user.getPassword());
 			boolean isMatch = encoder.matches(rawPassword, encodePasswd);
 			if (!isMatch) {
@@ -99,13 +99,13 @@ public class UserController {
 				user.setPassword(user.getPassword());
 			}
 		}
-		
+
 		try {
 			userService.saveUser(user);
 		}  catch (ConstraintViolationException e)  {
 			return ResponseEntity.ok().body(new Response(false, ConstraintViolationExceptionHandler.getMessage(e)));
 		}
-		
+
 		return ResponseEntity.ok().body(new Response(true, "处理成功", user));
 	}
 
@@ -115,7 +115,7 @@ public class UserController {
 	 * @return
 	 */
 	@DeleteMapping(value = "/{id}")
-    public ResponseEntity<Response> delete(@PathVariable("id") Long id, Model model) {
+	public ResponseEntity<Response> delete(@PathVariable("id") Long id, Model model) {
 		try {
 			userService.removeUser(id);
 		} catch (Exception e) {
@@ -123,7 +123,7 @@ public class UserController {
 		}
 		return  ResponseEntity.ok().body( new Response(true, "处理成功"));
 	}
-	
+
 	/**
 	 * 获取修改用户的界面，及数据
 	 * @param user

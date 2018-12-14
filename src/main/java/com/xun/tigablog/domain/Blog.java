@@ -75,6 +75,13 @@ public class Blog implements Serializable {
 			inverseJoinColumns = @JoinColumn(name = "vote_id", referencedColumnName = "id"))
 	private List<Vote> votes;
 
+	@OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+	@JoinColumn(name="catalog_id")
+	private Catalog catalog;
+
+	@Column(name="tags", length = 100)
+	private String tags;  // 标签
+
 	protected Blog() {
 		// TODO Auto-generated constructor stub
 	}
@@ -222,5 +229,16 @@ public class Blog implements Serializable {
 		this.votes = votes;
 		this.voteSize = this.votes.size();
 	}
- 
+	public String getTags() {
+		return tags;
+	}
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+	public Catalog getCatalog() {
+		return catalog;
+	}
+	public void setCatalog(Catalog catalog) {
+		this.catalog = catalog;
+	}
 }
