@@ -37,7 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @since 1.0.0 2017年3月25日
  */
 @Controller
-@RequestMapping("/u")
+@RequestMapping("u")
 public class UserspaceController {
     @Autowired
     private UserDetailsService userDetailsService;
@@ -56,7 +56,7 @@ public class UserspaceController {
     public String userSpace(@PathVariable("username") String username, Model model) {
         User user = (User) userDetailsService.loadUserByUsername(username);
         model.addAttribute("user", user);
-        return "redirect:/u/" + username + "/blogs";
+        return "redirect:" + username + "/blogs";
     }
 
     @GetMapping("/{username}/profile")
@@ -64,7 +64,7 @@ public class UserspaceController {
     public ModelAndView profile(@PathVariable("username") String username, Model model) {
         User user = (User) userDetailsService.loadUserByUsername(username);
         model.addAttribute("user", user);
-        return new ModelAndView("/userspace/profile", "userModel", model);
+        return new ModelAndView("userspace/profile", "userModel", model);
     }
 
     /**
@@ -107,7 +107,7 @@ public class UserspaceController {
     public ModelAndView avatar(@PathVariable("username") String username, Model model) {
         User user = (User) userDetailsService.loadUserByUsername(username);
         model.addAttribute("user", user);
-        return new ModelAndView("/userspace/avatar", "userModel", model);
+        return new ModelAndView("userspace/avatar", "userModel", model);
     }
 
 
@@ -168,7 +168,7 @@ public class UserspaceController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("page", page);
         model.addAttribute("blogList", list);
-        return (async == true ? "/userspace/u :: #mainContainerRepleace" : "/userspace/u");
+        return (async == true ? "userspace/u :: #mainContainerRepleace" : "userspace/u");
     }
 
     /**
@@ -212,7 +212,7 @@ public class UserspaceController {
         model.addAttribute("blogModel", blog);
         model.addAttribute("currentVote", currentVote);
 
-        return "/userspace/blog";
+        return "userspace/blog";
     }
 
 
@@ -237,6 +237,11 @@ public class UserspaceController {
         return ResponseEntity.ok().body(new Response(true, "处理成功", redirectUrl));
     }
 
+    @GetMapping("/deleteallblogs")
+    public void deleteAllBlog(){
+        blogService.removeAllBlog();
+    }
+
     /**
      * 获取新增博客的界面
      *
@@ -250,7 +255,7 @@ public class UserspaceController {
 
         model.addAttribute("blog", new Blog(null, null, null));
         model.addAttribute("catalogs", catalogs);
-        return new ModelAndView("/userspace/blogedit", "blogModel", model);
+        return new ModelAndView("userspace/blogedit", "blogModel", model);
     }
 
     /**
@@ -267,7 +272,7 @@ public class UserspaceController {
 
         model.addAttribute("blog", blogService.getBlogById(id));
         model.addAttribute("catalogs", catalogs);
-        return new ModelAndView("/userspace/blogedit", "blogModel", model);
+        return new ModelAndView("userspace/blogedit", "blogModel", model);
     }
 
     /**

@@ -25,7 +25,7 @@ import javax.validation.ConstraintViolationException;
  * @author <a href="https://waylau.com">Way Lau</a> 
  */
 @Controller
-@RequestMapping("/votes")
+@RequestMapping("votes")
 public class VoteController {
 
 	@Autowired

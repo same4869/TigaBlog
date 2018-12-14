@@ -21,7 +21,7 @@ import java.util.List;
  * 主页控制器.
  */
 @Controller
-@RequestMapping("/blogs")
+@RequestMapping("blogs")
 public class BlogController {
 
 	@Autowired
@@ -75,7 +75,7 @@ public class BlogController {
 			model.addAttribute("users", users);
 		}
 
-		return (async==true?"/index :: #mainContainerRepleace":"/index");
+		return (async==true?"index :: #mainContainerRepleace":"index");
 	}
 
 	@GetMapping("/newest")

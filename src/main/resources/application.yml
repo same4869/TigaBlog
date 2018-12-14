@@ -1,6 +1,6 @@
 # 服务全局端口
 server:
-  port: 8091
+  port: 80
 
 
 # 日志相关
@@ -61,7 +61,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 #      create 启动时删数据库中的表，然后创建，退出时不删除数据表
 #      create-drop 启动时删数据库中的表，然后创建，退出时删除数据表 如果表不存在报错
 #      update 如果启动时表格式不一致则更新表，原有数据保留

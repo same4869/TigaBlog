@@ -26,7 +26,7 @@ import java.util.List;
  * @author <a href="https://waylau.com">Way Lau</a> 
  */
 @Controller
-@RequestMapping("/catalogs")
+@RequestMapping("catalogs")
 public class CatalogController {
 
 	@Autowired
@@ -58,7 +58,7 @@ public class CatalogController {
 		
 		model.addAttribute("isCatalogsOwner", isOwner);
 		model.addAttribute("catalogs", catalogs);
-		return "/userspace/u :: #catalogRepleace";
+		return "userspace/u :: #catalogRepleace";
 	}
 	/**
 	 * 发表分类
@@ -115,7 +115,7 @@ public class CatalogController {
 	public String getCatalogEdit(Model model) {
 		Catalog catalog = new Catalog(null, null);
 		model.addAttribute("catalog",catalog);
-		return "/userspace/catalogedit";
+		return "userspace/catalogedit";
 	}
 	/**
 	 * 根据 Id 获取分类信息
@@ -127,7 +127,7 @@ public class CatalogController {
 	public String getCatalogById(@PathVariable("id") Long id, Model model) {
 		Catalog catalog = catalogService.getCatalogById(id);
 		model.addAttribute("catalog",catalog);
-		return "/userspace/catalogedit";
+		return "userspace/catalogedit";
 	}
 	
 }

@@ -26,7 +26,7 @@ import java.util.List;
  * @since 1.0.0 2017年3月8日
  */
 @Controller
-@RequestMapping("/comments")
+@RequestMapping("comments")
 public class CommentController {
 
     @Autowired
@@ -59,7 +59,7 @@ public class CommentController {
 
         model.addAttribute("commentOwner", commentOwner);
         model.addAttribute("comments", comments);
-        return "/userspace/blog :: #mainContainerRepleace";
+        return "userspace/blog :: #mainContainerRepleace";
     }
 
     /**
